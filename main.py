@@ -16,9 +16,25 @@ from encodings import hex_codec
 from twitter import Api as API
 
 
+class get_statuses(object):
+    def __init__(self, num=20):
+        self.s = client.GetFriendsTimeline(count=num)
+    def __iter__(self):
+        for i in s:
+            new_tb = WinControls.Border()
+            new_tb.BorderBrush = WinMedia.Brushes.Black
+            new_tb.BorderThickness=Thickness(5,3,3,5)
+            st_box = WinControls.TextBlock()
+            st_box.Text = i.text
+            st_box.TextWrapping = TextWrapping.Wrap
+            new_tb.Child = st_box
+            ## Seems foolish now, but eventually this will yield
+            ##  a UI element that can be splatted into a layout element
+            yield new_tb
+        return
 
 def get_statuses(client, num=20):
-    
+
     s = client.GetFriendsTimeline(count=num)
     for i in s:
         new_tb = WinControls.Border()
@@ -32,7 +48,7 @@ def get_statuses(client, num=20):
         ##  a UI element that can be splatted into a layout element
         yield new_tb
     return
-    
+
 
 ## Stolen from http://docs.google.com/Doc?id=dd59dk39_23ckv9qkfs
 ## dumps the ui heiarchy into a dict()
