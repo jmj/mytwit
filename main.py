@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
 
     # Need a new twitter client
-    t_client = API(username='jmj42', password='sl1me2')
+    t_client = API(username='jmj42', password='********')
     for i in get_statuses(t_client):
         winelem['StackPanel']['status_sp'].Children.Add(i)
 
