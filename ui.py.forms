@@ -1,0 +1,58 @@
+
+import System.Drawing
+import System.Windows.Forms
+
+from System.Drawing import *
+from System.Windows.Forms import *
+
+class Mainwin(Form):
+    def __init__(self):
+        self.InitializeComponent()
+    
+    def InitializeComponent(self):
+        self._main_lo = System.Windows.Forms.TableLayoutPanel()
+        self._msg_flow = System.Windows.Forms.FlowLayoutPanel()
+        self._update_box = System.Windows.Forms.TextBox()
+        self._main_lo.SuspendLayout()
+        self.SuspendLayout()
+        # 
+        # main_lo
+        # 
+        self._main_lo.ColumnCount = 1
+        self._main_lo.RowCount = 2
+        self._main_lo.Controls.Add(self._msg_flow)
+        self._main_lo.Controls.Add(self._update_box)
+        self._main_lo.Location = System.Drawing.Point(0, 0)
+        self._main_lo.Name = "main_lo"
+        self._main_lo.Size = System.Drawing.Size(
+            self.ClientRectangle.Width, self.ClientRectangle.Height)
+        #self._main_lo.TabIndex = 0
+        # 
+        # msg_flow
+        # 
+        self._msg_flow.Location = System.Drawing.Point(0, 0)
+        self._msg_flow.Name = "msg_flow"
+        self._msg_flow.Size = System.Drawing.Size(192, 241)
+        #self._msg_flow.TabIndex = 0
+        # 
+        # update_box
+        # 
+        self._update_box.AcceptsReturn = True
+        self._update_box.Location = System.Drawing.Point(0, 0)
+        self._update_box.Multiline = True
+        self._update_box.Name = "update_box"
+        self._update_box.Size = System.Drawing.Size(
+            self.ClientRectangle.Width, 600)
+        self._update_box.TabIndex = 0
+        # 
+        # mainwin
+        # 
+        #self.ClientSize = System.Drawing.Size(292, 467)
+        self.Width = 200
+        self.Controls.Add(self._main_lo)
+        self.Name = "mainwin"
+        self._main_lo.ResumeLayout(False)
+        self._main_lo.PerformLayout()
+        self.ResumeLayout(False)
+        self.PerformLayout()
+
