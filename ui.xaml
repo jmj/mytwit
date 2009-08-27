@@ -1,6 +1,6 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="MyTwit" Width="100" >
+    Title="MyTwit" Width="200" >
 
 
     <Grid Name="main_lo">
@@ -9,15 +9,21 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
+            <RowDefinition Height="15" />
             <RowDefinition Height="65" />
         </Grid.RowDefinitions>
 
         <ScrollViewer Grid.Column="0" Grid.Row="0">
             <StackPanel Name="status_sp"  ClipToBounds="True"/>
         </ScrollViewer>
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
+        <TextBlock Name="status_line"
             Grid.Column="0" Grid.Row="1">
-            <TextBox Name="update_status" MinLines="4" TextWrapping="Wrap" />
+            0
+        </TextBlock>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+            Grid.Column="0" Grid.Row="2">
+            <TextBox Name="update_status" AcceptsReturn="False"
+                MinLines="4" TextWrapping="Wrap" />
         </ScrollViewer>
     </Grid>
 
