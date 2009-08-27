@@ -8,7 +8,7 @@ from System.ComponentModel import BackgroundWorker
 from encodings import hex_codec
 from twitter import Api as API
 
-class MT_API(API):
+class MT_API(object):
     def __init__(self, *args, **kw):
         self.__worker = BackgroundWorker()
         self.__api = API(*args, **kw)
