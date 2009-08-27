@@ -16,15 +16,19 @@ class MT_API(API):
     def __getattr__(self, name):
         return getattr(self.__api, name)
 
-    def _do_call(name, cb, cbopts=[[],{}], callopts=[[],{}]):
+    def _do_call(self, name, cb, cbopts=[[],{}], callopts=[[],{}]):
         if self.__worker.IsBusy:
             return False
-        self.__worker.DoWork += lambda _,__: getattr(self.__api, name)(
-            *callopts[0], **callopts[1])
+        #self.__worker.DoWork += lambda _,__: getattr(self.__api, name)(
+        #    *callopts[0], **callopts[1])
+        self.__worker.DoWork += self.work_runner
         self.__worker.RunWorkerCompleted += lambda _,__: cb(
             _, __, *cbopts[0], **cbopts[1])
-        return self.__worker.RunWorkerAsync()
+        return self.__worker.RunWorkerAsync([name, callopts[0], callopts[1]])
 
+    def work_runner(self, worker, evArgs):
+        evArgs.Result = getattr(self.__api, evArgs.Argument[0])(
+            *evArgs.Argument[1], **evArgs.Argument[2])
     # simple convience function to convert func args into the form
     #   expected by the API call chain
     def callargs(*args, **kw):

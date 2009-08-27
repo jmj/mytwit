@@ -30,7 +30,7 @@ class app(Application):
 
         self.client = bg_thread.MT_API(username='jmj42', password='ickysonf')
 
-        self.mainwin.Loaded += lambda _,__: self.client.GetPublicTimeline(
+        self.mainwin.Loaded += lambda _,__: self.client.GetFriendsTimeline(
             self.status_cb)
 
 
@@ -52,6 +52,15 @@ class app(Application):
             self.Waddle(c.Content, d)
 
     def status_cb(app, bgworker, evArgs):
-        print evArgs.Cancelled
-        print evArgs.Error
-        print evArgs.Result
+        if evArgs.Cancelled or evArgs.Error:
+            return
+
+        for i in evArgs.Result:
+            new_tb = WinControls.Border()
+            new_tb.BorderBrush = WinMedia.Brushes.Black
+            new_tb.BorderThickness=Thickness(5,3,3,5)
+            st_box = WinControls.TextBlock()
+            st_box.Text = i.text
+            st_box.TextWrapping = TextWrapping.Wrap
+            new_tb.Child = st_box
+            app.winelem['StackPanel']['status_sp'].Children.Add(new_tb)
