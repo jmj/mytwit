@@ -3,6 +3,7 @@ import clr
 
 clr.AddReference('PresentationCore')
 clr.AddReference('PresentationFramework')
+clr.AddReference('WindowsBase')
 
 from System.IO import File
 from System.Windows.Markup import XamlReader
@@ -10,6 +11,7 @@ from System.Windows import Controls as WinControls
 from System.Windows import Media as WinMedia
 from System.Windows import Thickness
 from System.Windows import TextWrapping
+from System.Windows.Input import Key
 
 from System.Windows import Application
 
@@ -33,6 +35,9 @@ class app(Application):
         self.mainwin.Loaded += lambda _,__: self.client.GetFriendsTimeline(
             self.status_cb)
 
+        self.winelem['TextBox']['update_status'].KeyDown += self.post_handle
+        self.winelem['TextBox']['update_status'].TextChanged += self.text_handle
+
 
     ## Stolen from http://docs.google.com/Doc?id=dd59dk39_23ckv9qkfs
     ## dumps the ui heiarchy into a dict()
@@ -51,7 +56,8 @@ class app(Application):
         elif hasattr(c,"Content"):
             self.Waddle(c.Content, d)
 
-    def status_cb(app, bgworker, evArgs):
+    def status_cb(self, bgworker, evArgs):
+        bgworker.RunWorkerCompleted -= self.status_cb
         if evArgs.Cancelled or evArgs.Error:
             return
 
@@ -63,4 +69,30 @@ class app(Application):
             st_box.Text = i.text
             st_box.TextWrapping = TextWrapping.Wrap
             new_tb.Child = st_box
-            app.winelem['StackPanel']['status_sp'].Children.Add(new_tb)
+            self.winelem['StackPanel']['status_sp'].Children.Add(new_tb)
+
+    def post_handle(self, control, evArgs):
+        print control.Text
+        print len(control.Text)
+        if evArgs.Key == Key.Return:
+            control.IsEnabled = False
+            self.client.PostUpdate(self.post_cb,
+                self.client.callargs(),
+                self.client.callargs(control.Text))
+            
+            
+
+    def text_handle(app, control, evArgs):
+        x = len(control.Text)
+        app.winelem['TextBlock']['status_line'].Text = str(x)
+
+    def post_cb(self, bgworker, evArgs, *args, **kw):
+        bgworker.RunWorkerCompleted -= self.post_cb
+        print args
+        print kw
+        print evArgs.Error
+        self.winelem['TextBox']['update_status'].IsEnabled = True
+        if evArgs.Error or evArgs.Cancelled:
+            return
+        self.winelem['TextBox']['update_status'].Clear()
+        

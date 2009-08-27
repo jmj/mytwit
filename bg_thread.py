@@ -19,19 +19,24 @@ class MT_API(API):
     def _do_call(self, name, cb, cbopts=[[],{}], callopts=[[],{}]):
         if self.__worker.IsBusy:
             return False
-        #self.__worker.DoWork += lambda _,__: getattr(self.__api, name)(
-        #    *callopts[0], **callopts[1])
         self.__worker.DoWork += self.work_runner
-        self.__worker.RunWorkerCompleted += lambda _,__: cb(
-            _, __, *cbopts[0], **cbopts[1])
+        self.__worker.RunWorkerCompleted += cb
+        print '----'
+        print callopts[0]
+        print callopts[1]
+        print '----'
+            
         return self.__worker.RunWorkerAsync([name, callopts[0], callopts[1]])
 
     def work_runner(self, worker, evArgs):
+        print  evArgs.Argument[0]
+        print  evArgs.Argument[1]
+        print  evArgs.Argument[2]
         evArgs.Result = getattr(self.__api, evArgs.Argument[0])(
             *evArgs.Argument[1], **evArgs.Argument[2])
     # simple convience function to convert func args into the form
     #   expected by the API call chain
-    def callargs(*args, **kw):
+    def callargs(self, *args, **kw):
         return [args, kw]
 
     #   API calls start here
@@ -53,8 +58,12 @@ class MT_API(API):
     def DestroyStatus(self, *args, **kw):
         return self._do_call('DestroyStatus', *args, **kw)
 
-    def PostUpdate(self, cb, *args, **kw):
-        return self._do_call('PostUpdate', cb, *args, **kw)
+    def PostUpdate(self, *args, **kw):
+        print '----- PostUpdate()-----'
+        print args
+        print kw
+        print '-----------------------'
+        return self._do_call('PostUpdate', *args, **kw)
 
     def PostUpdates(self, *args, **kw):
         return self._do_call('PostUpdates', *args, **kw)
