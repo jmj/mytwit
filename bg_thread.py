@@ -19,6 +19,8 @@ class MT_API(object):
     def _do_call(self, name, cb, cbopts=[[],{}], callopts=[[],{}]):
         if self.__worker.IsBusy:
             return False
+        ## Test to see if a new bgworker will solve the cb problem
+        self.__worker = BackgroundWorker()
         self.__worker.DoWork += self.work_runner
         self.__worker.RunWorkerCompleted += cb
         print '----'

@@ -12,6 +12,8 @@ from System.Windows import Media as WinMedia
 from System.Windows import Thickness
 from System.Windows import TextWrapping
 from System.Windows.Input import Key
+from System.Windows.Threading import DispatcherTimer as Timer
+from System import TimeSpan
 
 from System.Windows import Application
 
@@ -28,6 +30,8 @@ class app(Application):
     def __init__(self, uifile='ui.xaml'):
         self._ui_file = File.OpenRead(uifile)
         self.mainwin = XamlReader.Load(self._ui_file)
+        self.ticktock = Timer()
+        self.ticktock.Interval = TimeSpan(0,0,5,0,0)
         self.Waddle(self.mainwin.Content, self.winelem)
 
         self.client = bg_thread.MT_API(username='jmj42', password='ickysonf')
@@ -38,6 +42,10 @@ class app(Application):
         self.winelem['TextBox']['update_status'].KeyDown += self.post_handle
         self.winelem['TextBox']['update_status'].TextChanged += self.text_handle
 
+        self.ticktock.Tick += lambda _,__: self.client.GetFriendsTimeline(
+            self.status_cb)
+
+        self.ticktock.Start()
 
     ## Stolen from http://docs.google.com/Doc?id=dd59dk39_23ckv9qkfs
     ## dumps the ui heiarchy into a dict()
@@ -61,6 +69,8 @@ class app(Application):
         if evArgs.Cancelled or evArgs.Error:
             return
 
+        self.winelem['StackPanel']['status_sp'].Children.Clear()
+        
         for i in evArgs.Result:
             new_tb = WinControls.Border()
             new_tb.BorderBrush = WinMedia.Brushes.Black
