@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{faa6ae3a-cb68-44b9-9f86-f989de56cf7d}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>mytwit.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <IsWindowsApplication>True</IsWindowsApplication>
+    <AssemblyName>mytwit</AssemblyName>
+    <Name>mytwit</Name>
+    <RootNamespace>mytwit</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="c:\users\jeremy\documents\visual studio 2010\Projects\mytwit\mytwit\mytwit.py" />
+    <None Include="c:\users\jeremy\documents\visual studio 2010\Projects\mytwit\mytwit\mytwit.xaml" />
+    <None Include="mytwit.py" />
+    <None Include="mytwit.xaml" />
+  </ItemGroup>
+</Project>
